@@ -8,13 +8,19 @@
  */
 class AbstractChainHandler : public ChainHandler {
   /**
-   * @var Handler
+   * @var ChainHandler
    */
- private:
+private:
   ChainHandler *next_handler_;
+protected:
+  ChainModel model;
 
  public:
   AbstractChainHandler() : next_handler_(nullptr) {
+  }
+
+  void setModel(ChainModel model) {
+    this->model = model;
   }
 
   ChainHandler *SetNext(ChainHandler *handler) override {

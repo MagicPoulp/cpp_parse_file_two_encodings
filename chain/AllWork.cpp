@@ -7,8 +7,9 @@
 
 using namespace std;
 
-void AllWork::processAll() {
+void AllWork::processAll(ChainModel model) {
   MakeGlossaryChainHandler handler;
+  handler.setModel(model);
 
   std::vector<std::string> food = {"Nut", "Banana"};
   for (const std::string &f : food) {
