@@ -3,6 +3,7 @@
 #include <string>
 
 #include "CustomExceptions.hpp"
+#include "AllWork.hpp"
 
 using namespace std;
 
@@ -50,6 +51,8 @@ int mainWrapped(int argc, char* argv[])
     DetailedErrorCustomException ex("wrong number of arguments");
     throw ex;
   }
+  AllWork allwork;
+  allwork.processAll();
   ifstream newfile;
   newfile.open(argv[1], ios::in);
   if (newfile.is_open()) {
