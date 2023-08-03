@@ -11,17 +11,17 @@
 
 using namespace std;
 
-std::string MakeGlossaryChainHandler::Handle(const std::string& request) {
+string MakeGlossaryChainHandler::handle(const string& request) {
   if (request == "make_glossary") {
     FileManager fm;
     auto lambda = [](const string& line, ChainModel& model2) {
       MakeGlossaryChainHandler::addLinesToGlossary(model2.glossary, line);
     };
     auto funcLambda = LambdaUtilities::to_function(lambda);
-    fm.processFileByLine(model.inputFile, funcLambda, model);
+    fm.processFileByLine(pModel->inputFile, funcLambda, *pModel);
     return "success";
   } else {
-    return AbstractChainHandler::Handle(request);
+    return AbstractChainHandler::handle(request);
   }
 }
 
@@ -42,6 +42,5 @@ void MakeGlossaryChainHandler::addLinesToGlossary(unordered_map<string, int>& gl
     if (auto [it, inserted] = glossary.try_emplace(word, 1); !inserted) {
       it->second++;
     }
-    cout << word << endl;
   }
 }

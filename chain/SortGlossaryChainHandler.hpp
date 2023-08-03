@@ -1,16 +1,18 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "AbstractChainHandler.hpp"
 #include "FileManager.hpp"
 #include "LambdaUtilities.hpp"
 #include "ChainModel.hpp"
 
-class MakeGlossaryChainHandler : public AbstractChainHandler {
+class SortGlossaryChainHandler : public AbstractChainHandler {
 public:
   std::string handle(const std::string& request) override;
 
 private:
-  static void addLinesToGlossary(std::unordered_map<std::string, int>& glossary, const std::string& line);
+  void sortGlossary(std::unordered_map<std::string, int>& glossary, std::vector<std::pair<std::string, int>>& sortedGlossary);
 };

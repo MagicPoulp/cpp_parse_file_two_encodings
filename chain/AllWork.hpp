@@ -5,6 +5,6 @@
 class AllWork {
 
 public:
-  void processAll(ChainModel);
+  void processAll(ChainModel&);
 };
 
