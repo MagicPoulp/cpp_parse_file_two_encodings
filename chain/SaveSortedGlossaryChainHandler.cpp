@@ -41,10 +41,10 @@ void SaveSortedGlossaryChainHandler::saveSortedGlossaryToFile(vector<pair<string
   glossaryFile += ".table.txt";
   ofstream fileStream(glossaryFile);
   if (fileStream.is_open()) {
-    // to try catch this
     for (auto elem : sortedGlossary) {
       fileStream << elem.first << "," << elem.second << endl;
     }
+    // to add: close in case of an exception
     fileStream.close();
   }
   else {

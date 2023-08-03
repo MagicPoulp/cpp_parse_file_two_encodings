@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <functional>
+#include <string.h>
 
 #include "FileManager.hpp"
 #include "CustomExceptions.hpp"
@@ -101,4 +102,32 @@ std::string FileManager::UTF8toISO8859_1(const string& inString)
       }
   }
   return out;
+}
+
+// https://stackoverflow.com/questions/199260/how-do-i-reverse-a-utf-8-string-in-place
+void FileManager::utf8rev(std::string& inString)
+{
+  char* str = inString.data();
+
+  /* this assumes that str is valid UTF-8 */
+  char *scanl, *scanr, *scanr2, c;
+
+  /* first reverse the string */
+  for (scanl= str, scanr= str + strlen(str); scanl < scanr;)
+    c= *scanl, *scanl++= *--scanr, *scanr= c;
+
+  /* then scan all bytes and reverse each multibyte character */
+  for (scanl= scanr= str; c= *scanr++;) {
+    if ( (c & 0x80) == 0) // ASCII char
+      scanl= scanr;
+    else if ( (c & 0xc0) == 0xc0 ) { // start of multibyte
+      scanr2= scanr;
+      switch (scanr - scanl) {
+      case 4: c= *scanl, *scanl++= *--scanr, *scanr= c; // fallthrough
+      case 3: // fallthrough
+      case 2: c= *scanl, *scanl++= *--scanr, *scanr= c;
+      }
+      scanr= scanl= scanr2;
+    }
+  }
 }
