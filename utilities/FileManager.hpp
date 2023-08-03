@@ -17,4 +17,5 @@ public:
 
 private:
   std::string iso_8859_1_to_utf8(std::string &str);
+  std::string UTF8toISO8859_1(const std::string& inString);
 };

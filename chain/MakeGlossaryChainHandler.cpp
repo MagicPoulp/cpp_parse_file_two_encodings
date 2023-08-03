@@ -26,19 +26,25 @@ string MakeGlossaryChainHandler::handle(const string& request) {
 }
 
 void MakeGlossaryChainHandler::addLinesToGlossary(unordered_map<string, int>& glossary, const string& line) {
-  string line2 = line;
-  std::replace(line2.begin(), line2.end(), '\'', ' ');
-  std::replace(line2.begin(), line2.end(), '.', ' ');
+  regex reg("['.,:;]");
+  string line2 = regex_replace(line, reg, " ");
   stringstream ss(line2);
   string word;
   while (ss >> word) {
     if (word.length() <= 1) {
       continue;
     }
-    regex validWordRegex{"([a-zA-Z][0-9]éèêàâëûùîçôöü)+"};
-    if (!regex_match("word", validWordRegex)) {
-      DetailedErrorCustomException ex("Invalid character in the word: " + word);
+    if (word.length() > 64) {
+      DetailedErrorCustomException ex("A too large word was found, size: " + word.length());
+      throw ex;
     }
+    regex validWordRegex{"([a-zA-Z0-9éèêàâëûùîçôöü]|-)+"};
+    if (!regex_match(word, validWordRegex)) {
+      DetailedErrorCustomException ex("Invalid character in the word: " + word);
+      throw ex;
+    }
+    // We do not save only in lower case here because, according to the example,
+    // "les" and "Les" must be counted separately.
     if (auto [it, inserted] = glossary.try_emplace(word, 1); !inserted) {
       it->second++;
     }

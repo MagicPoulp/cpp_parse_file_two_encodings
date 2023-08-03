@@ -6,7 +6,6 @@
 #include "AbstractChainHandler.hpp"
 #include "ChainModel.hpp"
 #include "SortGlossaryChainHandler.hpp"
-#include <iostream>
 
 using namespace std;
 
