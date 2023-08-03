@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 
+#include "CustomExceptions.hpp"
+
 using namespace std;
 
 // https://stackoverflow.com/questions/4059775/convert-iso-8859-1-strings-to-utf-8-in-c-c
@@ -23,11 +25,30 @@ std::string iso_8859_1_to_utf8(std::string &str)
     return strOut;
 }
 
+int mainWrapped(int argc, char* argv[]);
+
 int main(int argc, char* argv[])
 {
-  if (argc != 2) {
-    cerr << "Error: wrong number of arguments" << endl;
+  try {
+    return mainWrapped(argc, argv);
+  }
+  catch (const DetailedErrorCustomException& ex) {
+    cerr << "Error: " << ex.what() << endl;
     return -1;
+  }
+  catch (const std::exception& ex) {
+    cerr << "Error: unexpected error" << endl;
+    // throw the exception to debug
+    throw ex;
+    return -1;
+  }
+}
+
+int mainWrapped(int argc, char* argv[])
+{
+  if (argc != 2) {
+    DetailedErrorCustomException ex("wrong number of arguments");
+    throw ex;
   }
   ifstream newfile;
   newfile.open(argv[1], ios::in);
