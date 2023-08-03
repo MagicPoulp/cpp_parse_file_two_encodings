@@ -8,5 +8,5 @@
 class ChainHandler {
  public:
   virtual ChainHandler *SetNext(ChainHandler *handler) = 0;
-  virtual std::string Handle(std::string request) = 0;
+  virtual std::string Handle(const std::string& request) = 0;
 };

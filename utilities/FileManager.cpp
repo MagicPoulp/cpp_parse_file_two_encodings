@@ -16,14 +16,14 @@ FileManager::~FileManager() {
   }
 }
 
-void FileManager::processFileByLine(string filename, std::function<void(string)>& lambda) {
+void FileManager::processFileByLine(const string& filename, std::function<void(const string&, ChainModel&)>& lambda, ChainModel& model) {
   readingFile.open(filename, ios::in);
   if (readingFile.is_open()) {
     try {
       string tp;
       while(getline(readingFile, tp)) {
         std::string utf8_string = iso_8859_1_to_utf8(tp);
-        lambda(utf8_string);
+        lambda(utf8_string, model);
       }
       readingFile.close();
     } catch(std::exception ex) {

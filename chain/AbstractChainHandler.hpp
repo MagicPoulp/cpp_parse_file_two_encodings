@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ChainHandler.hpp"
+#include "ChainModel.hpp"
 
 // https://refactoring.guru/design-patterns/chain-of-responsibility/cpp/example
 /**
@@ -31,7 +32,7 @@ protected:
     return handler;
   }
 
-  std::string Handle(std::string request) override {
+  std::string Handle(const std::string& request) override {
     if (this->next_handler_) {
       return this->next_handler_->Handle(request);
     }

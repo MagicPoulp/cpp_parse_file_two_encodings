@@ -4,6 +4,7 @@
 
 #include "AllWork.hpp"
 #include "MakeGlossaryChainHandler.hpp"
+#include "CustomExceptions.hpp"
 
 using namespace std;
 
@@ -11,13 +12,15 @@ void AllWork::processAll(ChainModel model) {
   MakeGlossaryChainHandler handler;
   handler.setModel(model);
 
-  std::vector<std::string> food = {"Nut", "Banana"};
-  for (const std::string &f : food) {
-    const std::string result = handler.Handle(f);
+  vector<string> steps = {"make_glossary", "sort_glossary"};
+  for (const std::string &step : steps) {
+    cout << "step started: " << step << endl;
+    const std::string result = handler.Handle(step);
     if (!result.empty()) {
-      std::cout << "  " << result;
+      cout << "step done: " << step << endl;
     } else {
-      std::cout << "  " << f << " was left untouched.\n";
+      DetailedErrorCustomException ex("Processing step " + step + " was not run as expected");
+      throw ex;
     }
   }
 }

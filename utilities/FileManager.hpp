@@ -1,7 +1,11 @@
+#pragma once
+
 #include <fstream>
 #include <iostream>
 #include <functional>
 #include <string>
+
+#include "ChainModel.hpp"
 
 class FileManager {
 private:
@@ -9,7 +13,7 @@ private:
 
 public:
   ~FileManager();
-  void processFileByLine(std::string filename, std::function<void(std::string)>& lambda);
+  void processFileByLine(const std::string& filename, std::function<void(const std::string&, ChainModel&)>& lambda, ChainModel& model);
 
 private:
   std::string iso_8859_1_to_utf8(std::string &str);

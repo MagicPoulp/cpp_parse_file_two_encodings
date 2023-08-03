@@ -1,3 +1,4 @@
+#pragma once
 
 // https://gist.github.com/khvorov/cd626ea3685fd5e8bf14
 
