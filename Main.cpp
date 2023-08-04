@@ -1,4 +1,5 @@
 #include <iostream>
+#include <di.hpp>
 
 #include "CustomExceptions.hpp"
 #include "ChainModel.hpp"
@@ -6,6 +7,7 @@
 #include "Main.hpp"
 
 using namespace std;
+namespace di = boost::di;
 
 int main(int argc, char* argv[])
 {
@@ -30,9 +32,26 @@ int mainWrapped(int argc, char* argv[])
     DetailedErrorCustomException ex("wrong number of arguments");
     throw ex;
   }
-  AllWork allwork;
-  ChainModel model;
-  model.inputFile = string(argv[1]);
-  allwork.processAll(model);
+  string inputFileString{argv[1]};
+
+  auto inputFile = [] {};
+
+  struct app {
+    BOOST_DI_INJECT(app, (named = inputFile) string inputFile) : inputFile(inputFile) {
+      AllWork allwork;
+      ChainModel model;
+      model.inputFile = inputFile;
+      allwork.processAll(model);
+    }
+  private:
+    string inputFile = 0;
+  };
+
+  auto injector = di::make_injector(
+    di::bind<string>().named(inputFile).to(inputFileString)
+    // due to a conflict with the unsorted_map of ChainModel, it requires more work to inject ChainModel
+    // di::bind<ChainModel>().to(ChainModel)
+  );
+  auto object = injector.create<app>();
   return 0;
 }
