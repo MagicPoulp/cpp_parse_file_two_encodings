@@ -1,7 +1,8 @@
 # Author
 
 Thierry Vilmart
-t.vilmart@gmail.com
+Montpellier, France
+https://github.com/MagicPoulp
 
 Important:
 It was required to spend half a day. Not to make the best project during a longer time (with multi-threading, more DI, unit tests, etc).
